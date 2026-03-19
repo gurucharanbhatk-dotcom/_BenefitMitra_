@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BenefitMitra — AI Financial Benefit Advisor for Indians</title>
+<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --saffron: #FF6B00;
+  --saffron-light: #FF8C38;
+  --saffron-pale: #FFF3E8;
+  --green: #006B3C;
+  --green-light: #00A85A;
+  --green-pale: #E8F5EE;
+  --navy: #0D1B3E;
+  --navy-mid: #1A2F5E;
+  --gold: #D4A017;
+  --gold-light: #F5C842;
+  --cream: #FDFAF4;
+  --white: #FFFFFF;
+  --gray-100: #F4F4F4;
+  --gray-200: #E8E8E8;
+  --gray-400: #999;
+  --gray-600: #555;
+  --gray-800: #222;
+  --red: #C0392B;
+  --purple: #6B21A8;
+  --teal: #0E7490;
+  --shadow: 0 4px 24px rgba(13,27,62,0.10);
+  --shadow-lg: 0 12px 48px rgba(13,27,62,0.18);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans',sans-serif;background:var(--cream);color:var(--navy);overflow-x:hidden}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--cream)}
+::-webkit-scrollbar-thumb{background:var(--saffron);border-radius:3px}
+
+/* ── HEADER ── */
+.header{
+  background:var(--navy);
+  padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  height:68px;
+  position:sticky;top:0;z-index:100;
+  border-bottom:3px solid var(--saffron);
+}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;background:var(--saffron);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.logo-text{font-family:'Yatra One',cursive;font-size:22px;color:var(--white);letter-spacing:0.5px}
+.logo-sub{font-size:11px;color:rgba(255,255,255,0.55);margin-top:-2px;font-weight:300}
+.header-stats{display:flex;gap:24px;align-items:center}
+.hstat{text-align:center}
+.hstat-num{font-size:18px;font-weight:700;color:var(--saffron)}
+.hstat-label{font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,#1e3a6e 100%);
+  padding:70px 5% 80px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-inner{max-width:900px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,107,0,0.15);border:1px solid rgba(255,107,0,0.4);
+  color:var(--saffron-light);border-radius:100px;padding:6px 16px;
+  font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.hero h1{
+  font-family:'Yatra One',cursive;
+  font-size:clamp(32px,5vw,58px);
+  color:var(--white);
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.hero h1 span{color:var(--saffron)}
+.hero p{font-size:18px;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto 40px;line-height:1.7}
+.hero-flags{display:flex;justify-content:center;gap:8px;margin-bottom:40px;flex-wrap:wrap}
+.flag-chip{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.8);padding:5px 14px;border-radius:100px;font-size:12px;
+}
+
+/* ── PROFILE FORM ── */
+.profile-section{
+  max-width:900px;margin:-40px auto 0;
+  padding:0 5%;position:relative;z-index:10;
+}
+.profile-card{
+  background:var(--white);border-radius:20px;
+  box-shadow:var(--shadow-lg);
+  border:1px solid var(--gray-200);
+  overflow:hidden;
+}
+.profile-header{
+  background:linear-gradient(90deg,var(--saffron),var(--saffron-light));
+  padding:20px 28px;display:flex;align-items:center;gap:12px;
+}
+.profile-header h2{font-family:'Yatra One',cursive;color:var(--white);font-size:20px}
+.profile-header p{color:rgba(255,255,255,0.85);font-size:13px}
+.profile-body{padding:28px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:12px;font-weight:600;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.6px}
+.form-group select,.form-group input{
+  border:1.5px solid var(--gray-200);border-radius:10px;
+  padding:10px 14px;font-size:14px;font-family:'Noto Sans',sans-serif;
+  color:var(--navy);background:var(--gray-100);
+  outline:none;transition:all 0.2s;
+  appearance:none;-webkit-appearance:none;
+  cursor:pointer;
+}
+.form-group select:focus,.form-group input:focus{border-color:var(--saffron);background:var(--white);box-shadow:0 0 0 3px rgba(255,107,0,0.1)}
+.select-wrap{position:relative}
+.select-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--gray-400);pointer-events:none;font-size:13px}
+
+/* Category checkboxes */
+.category-section{margin-top:20px;padding-top:20px;border-top:1.5px dashed var(--gray-200)}
+.category-section h3{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:14px}
+.checkbox-grid{display:flex;flex-wrap:wrap;gap:10px}
+.checkbox-item{
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+  background:var(--gray-100);border:1.5px solid var(--gray-200);
+  padding:8px 14px;border-radius:100px;transition:all 0.2s;user-select:none;
+}
+.checkbox-item input{display:none}
+.checkbox-item.checked{background:var(--saffron-pale);border-color:var(--saffron);color:var(--saffron)}
+.checkbox-item.checked-green{background:var(--green-pale);border-color:var(--green-light);color:var(--green)}
+.checkbox-item .cb-icon{font-size:15px}
+.checkbox-item .cb-label{font-size:13px;font-weight:600}
+
+.find-btn{
+  width:100%;margin-top:24px;
+  background:linear-gradient(90deg,var(--saffron),#FF8C00);
+  color:var(--white);border:none;border-radius:12px;
+  padding:16px;font-size:16px;font-weight:700;font-family:'Noto Sans',sans-serif;
+  cursor:pointer;transition:all 0.2s;letter-spacing:0.3px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.find-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,0,0.4)}
+.find-btn:active{transform:translateY(0)}
+
+/* ── MONEY MISSING BANNER ── */
+.money-banner{
+  max-width:900px;margin:32px auto;padding:0 5%;
+  display:none;
+}
+.money-card{
+  background:linear-gradient(135deg,#1a0a00,#3d1500);
+  border-radius:20px;padding:36px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:24px;
+  border:1px solid rgba(255,107,0,0.3);
+  position:relative;overflow:hidden;
+}
+.money-card::before{
+  content:'₹';position:absolute;right:-20px;top:-30px;
+  font-size:200px;font-weight:900;color:rgba(255,107,0,0.04);
+  font-family:'Yatra One',cursive;line-height:1;
+}
+.money-left h3{font-size:14px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.money-amount{font-family:'Yatra One',cursive;font-size:clamp(36px,5vw,56px);color:var(--saffron);line-height:1}
+.money-note{font-size:13px;color:rgba(255,255,255,0.5);margin-top:8px}
+.money-right{text-align:center}
+.money-count{font-size:48px;font-weight:900;color:var(--green-light);line-height:1}
+.money-count-label{font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px}
+.money-breakdown{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.breakdown-chip{
+  background:rgba(255,107,0,0.12);border:1px solid rgba(255,107,0,0.25);
+  color:rgba(255,200,150,0.9);padding:4px 12px;border-radius:100px;font-size:12px;
+}
+
+/* ── FILTERS ── */
+.results-section{max-width:1100px;margin:0 auto;padding:0 5% 80px}
+.filters-bar{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  margin-bottom:28px;padding:16px 20px;
+  background:var(--white);border-radius:14px;
+  box-shadow:var(--shadow);border:1px solid var(--gray-200);
+}
+.filter-label{font-size:12px;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:0.8px;margin-right:4px}
+.filter-chip{
+  padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;
+  border:1.5px solid var(--gray-200);background:var(--gray-100);
+  cursor:pointer;transition:all 0.18s;color:var(--gray-600);
+}
+.filter-chip:hover{border-color:var(--saffron);color:var(--saffron)}
+.filter-chip.active{background:var(--saffron);border-color:var(--saffron);color:var(--white)}
+.results-count{margin-left:auto;font-size:13px;color:var(--gray-400);font-weight:500}
+
+/* ── SCHEME CARDS ── */
+.schemes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:20px;
+}
+.scheme-card{
+  background:var(--white);border-radius:18px;
+  border:1.5px solid var(--gray-200);
+  overflow:hidden;
+  transition:all 0.25s;
+  position:relative;
+}
+.scheme-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--saffron)}
+.scheme-card.matched{border-color:var(--green-light);border-width:2px}
+.scheme-card.matched::before{
+  content:'✓ MATCH';
+  position:absolute;top:12px;right:12px;
+  background:var(--green);color:var(--white);
+  font-size:9px;font-weight:800;letter-spacing:1.5px;
+  padding:3px 8px;border-radius:100px;
+}
+.card-top{padding:20px 20px 14px;display:flex;align-items:flex-start;gap:14px}
+.card-icon{
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+}
+.card-info{flex:1;min-width:0}
+.card-category{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:4px}
+.card-name{font-size:15px;font-weight:700;color:var(--navy);line-height:1.3}
+.card-state{font-size:11px;color:var(--gray-400);margin-top:3px;display:flex;align-items:center;gap:4px}
+
+.card-benefit{
+  margin:0 20px;padding:12px 16px;border-radius:12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.benefit-amount{font-size:20px;font-weight:800;line-height:1}
+.benefit-type{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+
+.card-score{margin:12px 20px 0;display:flex;align-items:center;gap:10px}
+.score-bar-wrap{flex:1;height:6px;background:var(--gray-200);border-radius:3px;overflow:hidden}
+.score-bar{height:100%;border-radius:3px;transition:width 0.6s ease}
+.score-label{font-size:11px;font-weight:700;color:var(--gray-600);min-width:30px;text-align:right}
+
+.card-tags{padding:12px 20px;display:flex;flex-wrap:wrap;gap:6px}
+.tag{
+  font-size:10px;font-weight:600;padding:3px 9px;border-radius:100px;
+  background:var(--gray-100);color:var(--gray-600);letter-spacing:0.3px;
+}
+
+.card-actions{padding:14px 20px;border-top:1px solid var(--gray-100);display:flex;gap:8px}
+.btn-apply{
+  flex:1;background:var(--saffron);color:var(--white);border:none;
+  border-radius:9px;padding:10px;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all 0.18s;font-family:'Noto Sans',sans-serif;
+}
+.btn-apply:hover{background:#e05a00}
+.btn-docs{
+  background:var(--gray-100);color:var(--navy);border:1.5px solid var(--gray-200);
+  border-radius:9px;padding:10px 14px;font-size:13px;font-weight:600;
+  cursor:pointer;transition:all 0.18s;font-family:'Noto Sans',sans-serif;
+}
+.btn-docs:hover{border-color:var(--navy);background:var(--gray-200)}
+
+/* ── NO RESULTS ── */
+.no-results{
+  text-align:center;padding:60px 20px;
+  background:var(--white);border-radius:18px;border:1.5px dashed var(--gray-200);
+}
+.no-results-icon{font-size:48px;margin-bottom:16px}
+.no-results h3{font-size:20px;color:var(--navy);margin-bottom:8px}
+.no-results p{color:var(--gray-600);font-size:14px}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(13,27,62,0.7);
+  z-index:1000;display:none;align-items:center;justify-content:center;
+  padding:20px;backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--white);border-radius:24px;
+  max-width:680px;width:100%;max-height:90vh;
+  overflow-y:auto;position:relative;
+  animation:modalIn 0.25s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(0.94) translateY(20px)}to{opacity:1;transform:none}}
+.modal-header{
+  padding:28px 28px 20px;
+  border-bottom:1px solid var(--gray-200);
+  position:sticky;top:0;background:var(--white);z-index:1;
+}
+.modal-category{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px}
+.modal-title{font-size:22px;font-weight:800;color:var(--navy);line-height:1.3}
+.modal-close{
+  position:absolute;right:20px;top:20px;
+  background:var(--gray-100);border:none;border-radius:50%;
+  width:36px;height:36px;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.15s;
+}
+.modal-close:hover{background:var(--gray-200)}
+.modal-body{padding:24px 28px 28px}
+.modal-amount{
+  background:var(--saffron-pale);border:1.5px solid rgba(255,107,0,0.2);
+  border-radius:14px;padding:16px 20px;margin-bottom:20px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.modal-amount-num{font-size:28px;font-weight:900;color:var(--saffron)}
+.modal-amount-type{font-size:12px;font-weight:700;color:var(--saffron);opacity:0.7;text-transform:uppercase;letter-spacing:0.8px}
+.modal-section{margin-bottom:20px}
+.modal-section h4{font-size:12px;font-weight:800;color:var(--gray-600);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.docs-list{display:flex;flex-direction:column;gap:6px}
+.doc-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 12px;background:var(--gray-100);border-radius:9px;font-size:13px;
+}
+.doc-item::before{content:'📄';font-size:14px}
+.steps-list{display:flex;flex-direction:column;gap:8px}
+.step-item{display:flex;gap:12px;align-items:flex-start}
+.step-num{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:var(--saffron);color:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;
+}
+.step-text{font-size:13px;color:var(--gray-800);line-height:1.5;padding-top:4px}
+.modal-link{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--green);color:var(--white);
+  text-decoration:none;padding:12px 20px;border-radius:10px;
+  font-weight:700;font-size:14px;transition:background 0.18s;margin-top:4px;
+}
+.modal-link:hover{background:var(--green-light)}
+.modal-meta{
+  display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:16px;
+  border-top:1px solid var(--gray-100);
+}
+.meta-chip{
+  font-size:12px;padding:4px 10px;border-radius:8px;
+  background:var(--gray-100);color:var(--gray-600);
+}
+
+/* ── EMPTY STATE (before search) ── */
+.pre-search{
+  max-width:900px;margin:40px auto;padding:0 5%;
+  text-align:center;color:var(--gray-400);
+}
+.pre-search-icon{font-size:48px;margin-bottom:12px}
+.pre-search p{font-size:15px;line-height:1.6}
+
+/* ── FOOTER ── */
+.footer{
+  background:var(--navy);color:rgba(255,255,255,0.5);
+  text-align:center;padding:28px 5%;font-size:13px;
+  border-top:3px solid var(--saffron);
+}
+.footer strong{color:var(--saffron)}
+
+/* ── CATEGORY COLORS ── */
+.cat-farmer{background:#E8F5E9;color:#2E7D32}
+.cat-farmer-icon{background:#E8F5E9}
+.cat-women{background:#FCE4EC;color:#AD1457}
+.cat-women-icon{background:#FCE4EC}
+.cat-bpl{background:#E3F2FD;color:#1565C0}
+.cat-bpl-icon{background:#E3F2FD}
+.cat-business{background:#FFF3E0;color:#E65100}
+.cat-business-icon{background:#FFF3E0}
+.cat-artisan{background:#F3E5F5;color:#6A1B9A}
+.cat-artisan-icon{background:#F3E5F5}
+.cat-scst{background:#EFEBE9;color:#4E342E}
+.cat-scst-icon{background:#EFEBE9}
+.cat-student{background:#E8EAF6;color:#283593}
+.cat-student-icon{background:#E8EAF6}
+.cat-livelihood{background:#E0F7FA;color:#006064}
+.cat-livelihood-icon{background:#E0F7FA}
+.cat-senior{background:#FFF8E1;color:#F57F17}
+.cat-senior-icon{background:#FFF8E1}
+
+.benefit-farmer{background:#E8F5E9;color:#2E7D32}
+.benefit-women{background:#FCE4EC;color:#AD1457}
+.benefit-bpl{background:#E3F2FD;color:#1565C0}
+.benefit-business{background:#FFF3E0;color:#E65100}
+.benefit-artisan{background:#F3E5F5;color:#6A1B9A}
+.benefit-scst{background:#EFEBE9;color:#4E342E}
+.benefit-student{background:#E8EAF6;color:#283593}
+.benefit-livelihood{background:#E0F7FA;color:#006064}
+.benefit-senior{background:#FFF8E1;color:#F57F17}
+
+/* Score bar colors */
+.score-100{background:linear-gradient(90deg,#00C853,#69F0AE)}
+.score-75{background:linear-gradient(90deg,#00BCD4,#4DD0E1)}
+.score-50{background:linear-gradient(90deg,#FF9800,#FFB74D)}
+.score-25{background:linear-gradient(90deg,#F44336,#EF9A9A)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .header-stats{display:none}
+  .money-card{flex-direction:column;text-align:center}
+  .money-card::before{display:none}
+  .modal-body{padding:16px 18px 20px}
+  .modal-header{padding:20px 18px 16px}
+}
+
+/* ── LOADER ── */
+.loading-pulse{
+  display:none;text-align:center;padding:40px;color:var(--gray-400);
+}
+.pulse-dots span{
+  display:inline-block;width:10px;height:10px;border-radius:50%;
+  background:var(--saffron);margin:0 3px;
+  animation:pulse 1.2s ease-in-out infinite;
+}
+.pulse-dots span:nth-child(2){animation-delay:0.2s}
+.pulse-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes pulse{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1);opacity:1}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">🇮🇳</div>
+    <div>
+      <div class="logo-text">BenefitMitra</div>
+      <div class="logo-sub">AI Financial Benefit Advisor</div>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="hstat">
+      <div class="hstat-num">36</div>
+      <div class="hstat-label">Schemes</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">9</div>
+      <div class="hstat-label">Categories</div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1>Money You May<br>Be <span>Missing</span></h1>
+    <p>Tell us about yourself. We instantly show every government scheme, subsidy and financial benefit you qualify for — across all of India.</p>
+    <div class="hero-flags">
+      <span class="flag-chip">🌾 Farmers</span>
+      <span class="flag-chip">👩 Women</span>
+      <span class="flag-chip">🏠 BPL Families</span>
+      <span class="flag-chip">🎓 Students</span>
+      <span class="flag-chip">🔨 Artisans</span>
+      <span class="flag-chip">📋 SC / ST</span>
+      <span class="flag-chip">💼 Entrepreneurs</span>
+      <span class="flag-chip">👴 Senior Citizens</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE FORM -->
+<section class="profile-section">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div>
+        <h2>Your Profile</h2>
+        <p>Fill your details to find matching schemes</p>
+      </div>
+    </div>
+    <div class="profile-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Age</label>
+          <input type="number" id="age" min="1" max="100" placeholder="e.g. 28">
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <div class="select-wrap">
+            <select id="gender">
+              <option value="">Select gender</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>State</label>
+          <div class="select-wrap">
+            <select id="state">
+              <option value="">Select state</option>
+              <option>Karnataka</option>
+              <option>Maharashtra</option>
+              <option>Tamil Nadu</option>
+              <option>Uttar Pradesh</option>
+              <option>Gujarat</option>
+              <option>Rajasthan</option>
+              <option>West Bengal</option>
+              <option>Madhya Pradesh</option>
+              <option>Andhra Pradesh</option>
+              <option>Bihar</option>
+              <option>Telangana</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Annual Income (₹)</label>
+          <input type="number" id="income" min="0" placeholder="e.g. 180000">
+        </div>
+        <div class="form-group">
+          <label>Occupation</label>
+          <div class="select-wrap">
+            <select id="occupation">
+              <option value="">Select occupation</option>
+              <option>Farmer</option>
+              <option>Entrepreneur</option>
+              <option>Student</option>
+              <option>Employee</option>
+              <option>Artisan</option>
+              <option>Self-employed</option>
+              <option>Unemployed</option>
+              <option>Homemaker</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Caste Category</label>
+          <div class="select-wrap">
+            <select id="caste">
+              <option value="General">General</option>
+              <option value="OBC">OBC</option>
+              <option value="SC">SC (Scheduled Caste)</option>
+              <option value="ST">ST (Scheduled Tribe)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Split category checkboxes -->
+      <div class="category-section">
+        <h3>Additional Categories <span style="color:var(--gray-400);font-weight:400;font-size:11px">(select all that apply)</span></h3>
+        <div class="checkbox-grid">
+          <label class="checkbox-item" id="cb-bpl">
+            <input type="checkbox" id="bpl_card">
+            <span class="cb-icon">🏠</span>
+            <span class="cb-label">BPL Card Holder</span>
+          </label>
+          <label class="checkbox-item" id="cb-disability">
+            <input type="checkbox" id="disability">
+            <span class="cb-icon">♿</span>
+            <span class="cb-label">Disability / Divyang</span>
+          </label>
+          <label class="checkbox-item" id="cb-senior">
+            <input type="checkbox" id="senior_citizen">
+            <span class="cb-icon">👴</span>
+            <span class="cb-label">Senior Citizen (60+)</span>
+          </label>
+          <label class="checkbox-item" id="cb-exsvc">
+            <input type="checkbox" id="ex_serviceman">
+            <span class="cb-icon">🎖️</span>
+            <span class="cb-label">Ex-Serviceman</span>
+          </label>
+        </div>
+      </div>
+
+      <button class="find-btn" onclick="findSchemes()">
+        <span>🔍</span> Find My Benefits
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- LOADING -->
+<div class="loading-pulse" id="loader" style="display:none;padding:40px;text-align:center">
+  <div class="pulse-dots"><span></span><span></span><span></span></div>
+  <p style="margin-top:12px;color:var(--gray-400);font-size:14px">Finding your matching schemes…</p>
+</div>
+
+<!-- PRE SEARCH STATE -->
+<div class="pre-search" id="preSearch">
+  <div class="pre-search-icon">🇮🇳</div>
+  <p>Fill your profile above and click <strong>Find My Benefits</strong><br>to discover government schemes worth lakhs of rupees.</p>
+</div>
+
+<!-- MONEY BANNER -->
+<div class="money-banner" id="moneyBanner">
+  <div class="money-card">
+    <div class="money-left">
+      <h3>You May Be Missing Benefits Worth</h3>
+      <div class="money-amount" id="totalAmount">₹0</div>
+      <div class="money-note">Combined estimated value of matched schemes</div>
+      <div class="money-breakdown" id="breakdownChips"></div>
+    </div>
+    <div class="money-right">
+      <div class="money-count" id="matchCount">0</div>
+      <div class="money-count-label">Schemes<br>Matched</div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<section class="results-section" id="resultsSection" style="display:none">
+  <div class="filters-bar" id="filtersBar">
+    <span class="filter-label">Filter:</span>
+    <span class="filter-chip active" data-filter="all" onclick="filterSchemes(this,'all')">All</span>
+    <span class="filter-chip" data-filter="matched" onclick="filterSchemes(this,'matched')">✓ Matched Only</span>
+    <span class="filter-chip" data-filter="Farmer" onclick="filterSchemes(this,'Farmer')">🌾 Farmer</span>
+    <span class="filter-chip" data-filter="Women" onclick="filterSchemes(this,'Women')">👩 Women</span>
+    <span class="filter-chip" data-filter="BPL" onclick="filterSchemes(this,'BPL')">🏠 BPL</span>
+    <span class="filter-chip" data-filter="Business" onclick="filterSchemes(this,'Business')">💼 Business</span>
+    <span class="filter-chip" data-filter="Student" onclick="filterSchemes(this,'Student')">🎓 Student</span>
+    <span class="filter-chip" data-filter="SC/ST" onclick="filterSchemes(this,'SC/ST')">📋 SC/ST</span>
+    <span class="results-count" id="resultsCount"></span>
+  </div>
+  <div class="schemes-grid" id="schemesGrid"></div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-category" id="modalCat"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section style="background:var(--navy);padding:40px 5%;border-top:1px solid rgba(255,255,255,0.08)">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px">
+    <div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--saffron);margin-bottom:10px">Contact</div>
+      <div style="font-size:18px;font-weight:700;color:var(--white);margin-bottom:4px">Guru</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">
+        <a href="/cdn-cgi/l/email-protection#711604030412191003101f5f131910055f1a31161c10181d5f121e1c" style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.75);text-decoration:none;font-size:14px;transition:color 0.2s" onmouseover="this.style.color='#FF8C38'" onmouseout="this.style.color='rgba(255,255,255,0.75)'">
+          <span style="font-size:16px">✉</span> <span class="__cf_email__" data-cfemail="98ffedeaedfbf0f9eaf9f6b6faf0f9ecb6f3d8fff5f9f1f4b6fbf7f5">[email&#160;protected]</span>
+        </a>
+        <a href="tel:8296372184" style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.75);text-decoration:none;font-size:14px;transition:color 0.2s" onmouseover="this.style.color='#FF8C38'" onmouseout="this.style.color='rgba(255,255,255,0.75)'">
+          <span style="font-size:16px">📞</span> 82963 72184
+        </a>
+      </div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-family:'Yatra One',cursive;font-size:22px;color:var(--white);margin-bottom:4px">BenefitMitra</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4)">Helping Indians find benefits<br>they deserve</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>🇮🇳 <strong>BenefitMitra</strong> — AI Financial Benefit Advisor for Indians</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ══════════════════════════════════════════════════════════
+// FULL SCHEMES DATABASE (36 schemes)
+// ══════════════════════════════════════════════════════════
+const SCHEMES = [
+  {id:'S001',name:'PM SVANidhi – Street Vendor Loan',category:'Livelihood',target:'BPL',state:'All India',income_limit:200000,age_min:18,age_max:55,benefit_type:'Loan',benefit_value:50000,benefit_display:'₹10,000 – ₹50,000',link:'https://pmsvanidhi.mohua.gov.in',docs:['Aadhaar Card','Vendor Identity Card','Bank Passbook'],steps:['Apply online at pmsvanidhi.mohua.gov.in','Complete e-KYC via Aadhaar OTP','Urban Local Body verifies vendor status','Loan disbursed within 30 days','Repay on time for higher loan eligibility'],tags:['BPL','Livelihood','Loan','Urban'],notes:'Working capital loan; interest subvention 7%; builds credit history'},
+  {id:'S002',name:'PM Mudra Yojana – Shishu',category:'Business',target:'Entrepreneur',state:'All India',income_limit:null,age_min:18,age_max:60,benefit_type:'Loan',benefit_value:50000,benefit_display:'₹50,000',link:'https://mudra.org.in',docs:['Aadhaar Card','PAN Card','Business proof or project plan'],steps:['Visit nearest bank, MFI or NBFC','Fill Mudra loan application form','Submit business plan and KYC documents','Bank evaluates and sanctions','Loan disbursed in 15 days'],tags:['Business','Entrepreneur','Loan'],notes:'No collateral required; Kishore up to ₹5L; Tarun up to ₹10L'},
+  {id:'S003',name:'PM Kisan Samman Nidhi',category:'Farmer',target:'Farmer',state:'All India',income_limit:null,age_min:21,age_max:null,benefit_type:'Grant',benefit_value:6000,benefit_display:'₹6,000 / year',link:'https://pmkisan.gov.in',docs:['Aadhaar Card','Land Records (7/12)','Bank Account','Mobile Number'],steps:['Go to pmkisan.gov.in → New Farmer Registration','Enter Aadhaar and land details','Complete e-KYC via OTP','Wait 7 days for verification','₹2,000 credited every 4 months (3 instalments)'],tags:['Farmer','Grant','Agriculture'],notes:'Must complete e-KYC or payment withheld; ₹2,000 × 3 per year'},
+  {id:'S004',name:'Karnataka Gruha Lakshmi Scheme',category:'Women',target:'Women',state:'Karnataka',income_limit:200000,age_min:21,age_max:null,benefit_type:'Cash Transfer',benefit_value:24000,benefit_display:'₹24,000 / year',link:'https://sevasindhu.karnataka.gov.in',docs:['Ration Card','Aadhaar Card','Bank Passbook (in woman\'s own name)','Mobile Number'],steps:['Visit sevasindhu.karnataka.gov.in','Login with mobile OTP','Fill Gruha Lakshmi application form','Upload required documents','Approval SMS within 15 days','₹2,000/month auto-credited'],tags:['Women','Karnataka','Cash Transfer'],notes:'Bank account must be in woman\'s own name; must be woman head of household'},
+  {id:'S005',name:'PM Fasal Bima Yojana',category:'Farmer',target:'Farmer',state:'All India',income_limit:null,age_min:18,age_max:null,benefit_type:'Insurance',benefit_value:15000,benefit_display:'₹15,000 (crop cover)',link:'https://pmfby.gov.in',docs:['Land Records','Bank Account','Aadhaar Card','Crop Sowing Certificate'],steps:['Visit CSC, bank branch or insurance company','Fill crop insurance form before cutoff date','Pay only 2% premium (Kharif) or 1.5% (Rabi)','Receive policy document','Report crop loss within 72 hours of damage'],tags:['Farmer','Insurance','Agriculture'],notes:'Kharif cutoff: July 31; covers natural calamity, pest, disease losses'},
+  {id:'S006',name:'Startup India Seed Fund',category:'Business',target:'Entrepreneur',state:'All India',income_limit:null,age_min:18,age_max:45,benefit_type:'Grant',benefit_value:2000000,benefit_display:'₹20,00,000',link:'https://startupindia.gov.in',docs:['DPIIT Recognition Certificate','Pitch Deck','Financial Projections','Business Plan'],steps:['Register startup at startupindia.gov.in and get DPIIT number','Apply to SISFS-supported incubator','Incubator evaluates business','Seed fund approved by selection committee','₹20L disbursed in milestones'],tags:['Business','Entrepreneur','Grant','Startup'],notes:'For DPIIT-recognised startups; greenfield enterprise only; incubator mentorship included'},
+  {id:'S007',name:'Antyodaya Anna Yojana',category:'BPL',target:'BPL',state:'All India',income_limit:100000,age_min:0,age_max:null,benefit_type:'Subsidy',benefit_value:7200,benefit_display:'₹7,200 / year',link:'https://dfpd.gov.in',docs:['AAY Ration Card','Aadhaar Card (linked)'],steps:['Automatic if you hold AAY yellow ration card','Visit Fair Price Shop (PDS) monthly','Collect 35 kg grain at ₹2/kg (wheat) or ₹3/kg (rice)','No application needed — based on SECC survey list'],tags:['BPL','Food','Subsidy'],notes:'Automatic benefit for AAY card holders; 35 kg grain/month'},
+  {id:'S008',name:'Kisan Credit Card',category:'Farmer',target:'Farmer',state:'All India',income_limit:null,age_min:18,age_max:75,benefit_type:'Loan',benefit_value:300000,benefit_display:'₹3,00,000 @ ~4%',link:'https://nabard.org',docs:['Land Records (7/12)','Aadhaar Card','2 Passport Photos','Crop Plan','Bank Account Statement'],steps:['Visit nearest cooperative bank or commercial bank','Fill KCC application form','Submit land records and crop documents','Bank inspection of land holding','KCC card issued within 21 days'],tags:['Farmer','Loan','Agriculture'],notes:'Interest subvention makes effective rate ~4%; ₹3L without collateral'},
+  {id:'S009',name:'Karnataka Rajiv Gandhi Mahila Vikas',category:'Women',target:'Women',state:'Karnataka',income_limit:150000,age_min:18,age_max:50,benefit_type:'Grant',benefit_value:25000,benefit_display:'₹25,000',link:'https://mahilawelfare.karnataka.gov.in',docs:['BPL Card','Aadhaar Card','Bank Account','Passport Photo'],steps:['Visit District Women and Child Welfare Office','Collect and fill application form','Submit documents + photo','Officer verifies eligibility','Approval and grant disbursed within 30 days'],tags:['Women','BPL','Karnataka','Grant'],notes:'For BPL women in Karnataka; entrepreneurship support'},
+  {id:'S010',name:'PM Vishwakarma Yojana',category:'Artisan',target:'Artisan',state:'All India',income_limit:300000,age_min:18,age_max:60,benefit_type:'Skill+Loan',benefit_value:100000,benefit_display:'₹1,00,000 @ 5%',link:'https://pmvishwakarma.gov.in',docs:['Aadhaar Card','Trade/Skill Proof','Bank Account'],steps:['Register on pmvishwakarma.gov.in','Verify traditional trade skill at CSC','Complete 5-day basic training (₹500/day stipend)','Receive PM Vishwakarma Certificate','Apply for ₹1L loan at 5%; get ₹2L after repayment'],tags:['Artisan','Loan','Skill','Traditional'],notes:'18 traditional trades eligible; free toolkit ₹15,000; GeM portal market linkage'},
+  {id:'S011',name:'Sukanya Samriddhi Yojana',category:'Women',target:'Women',state:'All India',income_limit:null,age_min:0,age_max:10,benefit_type:'Savings',benefit_value:150000,benefit_display:'₹1,50,000/year tax-free',link:'https://india.gov.in/sukanya',docs:['Girl Child Birth Certificate','Parent Aadhaar','Parent PAN Card'],steps:['Visit post office or authorised bank branch','Fill SSY account opening form','Submit documents + initial deposit (min ₹250)','Account opened in girl child\'s name','Deposit annually up to ₹1.5L; withdraw at age 21'],tags:['Women','Savings','Tax Benefit'],notes:'8.2% interest p.a.; tax deduction u/s 80C; girl must be below 10 years'},
+  {id:'S012',name:'Karnataka SC/ST Dev Corp Loan',category:'SC/ST',target:'SC/ST',state:'Karnataka',income_limit:300000,age_min:18,age_max:55,benefit_type:'Loan',benefit_value:500000,benefit_display:'₹5,00,000 @ 4%',link:'https://kscdc.net',docs:['Caste Certificate','Aadhaar Card','Income Certificate','Project/Business Report','Bank Account'],steps:['Visit KSCDC district office or apply online at kscdc.net','Submit application with project report','KSCDC verifies documents + field inspection','Loan committee approval','Loan disbursed within 60 days'],tags:['SC/ST','Loan','Karnataka'],notes:'Concessional 4% rate; state subsidises the difference from market rate'},
+  {id:'S013',name:'Ayushman Bharat PM-JAY',category:'BPL',target:'BPL',state:'All India',income_limit:null,age_min:0,age_max:null,benefit_type:'Health Insurance',benefit_value:500000,benefit_display:'₹5,00,000 / year',link:'https://pmjay.gov.in',docs:['Aadhaar Card','Ration Card (SECC auto-verified)'],steps:['Check eligibility at pmjay.gov.in or call 14555','Visit nearest CSC or empanelled hospital','Download Ayushman card (free)','Show card at any empanelled hospital for cashless treatment','1,500+ procedures covered including pre-existing diseases'],tags:['BPL','Health','Insurance','Cashless'],notes:'No premium; covers pre-existing diseases from day 1; senior citizens 70+ also eligible'},
+  {id:'S014',name:'Pradhan Mantri Suraksha Bima Yojana',category:'BPL',target:'General',state:'All India',income_limit:null,age_min:18,age_max:70,benefit_type:'Insurance',benefit_value:200000,benefit_display:'₹2,00,000 accident cover',link:'https://www.jansuraksha.gov.in',docs:['Aadhaar Card','Bank Account (for auto-debit)'],steps:['Visit bank branch or post office','Fill PMSBY enrolment form','Consent for ₹12/year auto-debit','Policy active immediately','Claim filed by nominee for accidental death'],tags:['Insurance','Accident','BPL','Low-cost'],notes:'Only ₹12/year premium; ₹2L for death/full disability; ₹1L for partial disability'},
+  {id:'S015',name:'Pradhan Mantri Jeevan Jyoti Bima Yojana',category:'BPL',target:'General',state:'All India',income_limit:null,age_min:18,age_max:50,benefit_type:'Life Insurance',benefit_value:200000,benefit_display:'₹2,00,000 life cover',link:'https://www.jansuraksha.gov.in',docs:['Aadhaar Card','Bank Account (for auto-debit)'],steps:['Visit bank or insurance company','Fill PMJJBY enrolment form','Consent for ₹330/year auto-debit','Policy active immediately','Nominee receives ₹2L on any cause of death'],tags:['Insurance','Life','BPL','Low-cost'],notes:'₹330/year premium for ₹2L life cover; any cause of death covered; renewable till 55'},
+  {id:'S016',name:'PM Awas Yojana – Gramin (PMAY-G)',category:'BPL',target:'BPL',state:'All India',income_limit:null,age_min:0,age_max:null,benefit_type:'Housing Grant',benefit_value:120000,benefit_display:'₹1,20,000 (plains)',link:'https://pmayg.nic.in',docs:['Aadhaar Card','BPL/AAY Ration Card','Land Ownership Proof','Bank Account'],steps:['Gram Panchayat registers houseless applicant','SECC 2011 list verification by block office','Approval by District Magistrate','₹40,000 released in 3 instalments on construction milestones','MGNREGS wages also paid separately'],tags:['BPL','Housing','Grant','Rural'],notes:'For houseless or kutcha house dwellers in rural areas; toilet construction also supported'},
+  {id:'S017',name:'PM Awas Yojana – Urban 2.0 (PMAY-U)',category:'BPL',target:'BPL',state:'All India',income_limit:900000,age_min:0,age_max:null,benefit_type:'Interest Subsidy',benefit_value:267280,benefit_display:'Interest subsidy up to ₹2.67L',link:'https://pmaymis.gov.in',docs:['Aadhaar Card','Income Certificate','Property Documents','Bank Account'],steps:['Apply via bank, HFC, or CSC','Submit income proof and property documents','Bank verifies eligibility (EWS ≤ ₹3L, LIG ≤ ₹6L)','Subsidy credited to home loan account','Effective interest rate reduced significantly'],tags:['BPL','Housing','Subsidy','Urban'],notes:'EWS income ≤ ₹3L; LIG ≤ ₹6L; 6.5% interest subsidy on loan up to ₹6L'},
+  {id:'S018',name:'Pradhan Mantri Matru Vandana Yojana',category:'Women',target:'Women',state:'All India',income_limit:null,age_min:19,age_max:null,benefit_type:'Cash Transfer',benefit_value:11000,benefit_display:'₹11,000 (1st child)',link:'https://pmmvy.wcd.gov.in',docs:['Aadhaar Card','Bank Passbook','MCH Card','LMP Certificate'],steps:['Register at Anganwadi centre after pregnancy confirmed','Receive ₹3,000 after first ANC visit','Receive ₹2,000 after delivery and first immunisation','Receive ₹6,000 for institutional delivery','Total ₹11,000 in 3 instalments via DBT'],tags:['Women','Maternity','Grant','Pregnancy'],notes:'For 1st live birth; 2nd child (girl) also eligible for ₹6K; paid into mother\'s account only'},
+  {id:'S019',name:'Standup India – Women / SC / ST Loan',category:'Women',target:'Entrepreneur',state:'All India',income_limit:null,age_min:18,age_max:null,benefit_type:'Loan',benefit_value:10000000,benefit_display:'₹10L – ₹1 Crore',link:'https://www.standupmitra.in',docs:['Aadhaar Card','PAN Card','Business Plan','Caste Cert (if SC/ST)','Bank Account'],steps:['Apply at standupmitra.in or visit any Scheduled Commercial Bank','Submit business plan and KYC documents','Bank evaluates and does due diligence','Loan covers up to 75% of project cost','Loan disbursed after approval'],tags:['Women','SC/ST','Business','Loan','Entrepreneur'],notes:'At least 1 woman and 1 SC/ST borrower per bank branch; greenfield enterprises only'},
+  {id:'S020',name:'Karnataka Udyogini Scheme',category:'Women',target:'Women',state:'Karnataka',income_limit:200000,age_min:18,age_max:55,benefit_type:'Loan+Subsidy',benefit_value:300000,benefit_display:'₹3L loan; 50% subsidy (SC/ST)',link:'https://kswdc.karnataka.gov.in',docs:['Aadhaar Card','Ration Card','Caste Certificate (if SC/ST)','Bank Account','Photo'],steps:['Apply at KSWDC district office','Attend 3-6 day EDP training','Submit business plan','Loan and subsidy sanctioned within 45 days','No collateral required for loans up to ₹3L'],tags:['Women','Karnataka','Business','Loan','Subsidy'],notes:'50% subsidy for SC/ST women; 30% for General/OBC; no collateral required'},
+  {id:'S021',name:'Namo Drone Didi – Women SHG Scheme',category:'Women',target:'Women',state:'All India',income_limit:null,age_min:18,age_max:null,benefit_type:'Subsidy',benefit_value:800000,benefit_display:'80% subsidy on drone (up to ₹8L)',link:'https://agricoop.nic.in',docs:['Women SHG Registration Documents','Aadhaar Card','Bank Account','Training Certificate'],steps:['Women SHG registers interest with NABARD or Agriculture Dept','SHG selected by state government','Drone provided with 80% central subsidy','SHG members receive 15-day pilot training','Rent drone to farmers; earn ₹1L+/year'],tags:['Women','Farmer','Technology','Subsidy'],notes:'For Women SHGs; earn ₹1L+/year renting drone; 15,000 SHGs targeted by 2026'},
+  {id:'S022',name:'PM Kisan Maandhan Yojana (PM-KMY)',category:'Farmer',target:'Farmer',state:'All India',income_limit:null,age_min:18,age_max:40,benefit_type:'Pension',benefit_value:36000,benefit_display:'₹3,000/month after age 60',link:'https://pmkmy.gov.in',docs:['Aadhaar Card','Land Records','Bank Account','Mobile Number'],steps:['Register at CSC or pmkmy.gov.in','Confirm small/marginal farmer status (≤2 hectares)','Choose monthly contribution (₹55–₹200 based on age)','Govt matches your contribution equally','Receive ₹3,000/month pension from age 60'],tags:['Farmer','Pension','Social Security'],notes:'Govt matches monthly contribution 1:1; ₹3,000/month guaranteed after 60'},
+  {id:'S023',name:'SMAM – Agricultural Mechanisation Subsidy',category:'Farmer',target:'Farmer',state:'All India',income_limit:null,age_min:18,age_max:null,benefit_type:'Subsidy',benefit_value:75000,benefit_display:'Up to 50% subsidy on farm equipment',link:'https://agrimachinery.nic.in',docs:['Aadhaar Card','Land Records','Bank Account','Caste Certificate (for higher subsidy)'],steps:['Apply at state agriculture department or agrimachinery.nic.in','Choose from approved equipment list','Get subsidy pre-approved','Purchase equipment from empanelled dealer','Subsidy released to dealer or farmer account'],tags:['Farmer','Subsidy','Equipment','Agriculture'],notes:'SC/ST/small/marginal farmers get higher subsidy; covers tractors, harvesters, seeders'},
+  {id:'S024',name:'PKVY – Organic Farming Subsidy',category:'Farmer',target:'Farmer',state:'All India',income_limit:null,age_min:18,age_max:null,benefit_type:'Subsidy',benefit_value:50000,benefit_display:'₹50,000/hectare over 3 years',link:'https://pgsindia-ncof.gov.in',docs:['Land Records','Aadhaar Card','Group Formation List (20+ farmers)','Bank Account'],steps:['Form cluster group of minimum 20 farmers','Apply at district agriculture office','Receive ₹50,000/ha subsidy over 3 years','Organic certification supported and funded','Premium market linkage provided'],tags:['Farmer','Organic','Subsidy','Agriculture'],notes:'Cluster-based; organic certification fees covered; premium market access'},
+  {id:'S025',name:'Raitha Shakti – Karnataka Diesel Subsidy',category:'Farmer',target:'Farmer',state:'Karnataka',income_limit:null,age_min:18,age_max:null,benefit_type:'Subsidy',benefit_value:4000,benefit_display:'₹4,000 diesel subsidy / season',link:'https://raitamitra.karnataka.gov.in',docs:['Aadhaar Card','PM Kisan Registration','Land Records','Tractor/Pump Ownership Proof'],steps:['Register on Raitamitra portal','Link PM Kisan Samman Nidhi ID','Submit pump/tractor ownership documents','Verified by revenue department','Subsidy credited directly to linked bank account'],tags:['Farmer','Karnataka','Subsidy','Diesel'],notes:'Linked to PM Kisan database; for diesel used in pumpsets and tractors'},
+  {id:'S026',name:'Pre-Matric Scholarship for SC Students',category:'Student',target:'SC/ST',state:'All India',income_limit:250000,age_min:14,age_max:18,benefit_type:'Scholarship',benefit_value:3500,benefit_display:'₹3,500/year Day Scholar',link:'https://scholarships.gov.in',docs:['Aadhaar Card','Caste Certificate','Income Certificate','School Bonafide Certificate','Bank Account'],steps:['Apply on scholarships.gov.in (NSP portal)','School verifies and forwards application','State scholarship authority approves','Amount transferred via DBT to student\'s account','Renewal required each academic year'],tags:['Student','SC/ST','Scholarship','Education'],notes:'Day Scholar ₹3,500; Hosteller ₹7,000; parent income ≤ ₹2.5L; for Class 9-10'},
+  {id:'S027',name:'Post-Matric Scholarship for SC Students',category:'Student',target:'SC/ST',state:'All India',income_limit:250000,age_min:16,age_max:null,benefit_type:'Scholarship',benefit_value:12000,benefit_display:'₹12,000/year (Degree level)',link:'https://scholarships.gov.in',docs:['Aadhaar Card','Caste Certificate','Income Certificate','College ID','Previous Marksheet','Bank Account'],steps:['Apply on NSP portal after admission','College/institute verifies application','State higher education authority approves','Tuition fees paid directly to institution','Maintenance allowance credited to student'],tags:['Student','SC/ST','Scholarship','Education','College'],notes:'Covers tuition fees + maintenance; income ≤ ₹2.5L; Class 11 onwards including professional courses'},
+  {id:'S028',name:'KSCDC Interest Subsidy – SC/ST Entrepreneurs',category:'SC/ST',target:'SC/ST',state:'Karnataka',income_limit:null,age_min:18,age_max:55,benefit_type:'Loan',benefit_value:10000000,benefit_display:'₹20L – ₹10 Cr @ 4%',link:'https://kscdc.net',docs:['Aadhaar Card','Caste Certificate','Business Project Report','Collateral Documents','CA-certified Financials'],steps:['Visit KSFC branch or apply online','Submit project report with financial projections','KSFC technical and financial evaluation','Interest subsidy from state govt on approved loan','Loan disbursed within 60 days'],tags:['SC/ST','Karnataka','Business','Loan','Entrepreneur'],notes:'4% effective rate vs ~12% market rate; state pays difference; for new and expansion businesses'},
+  {id:'S029',name:'National Overseas Scholarship (SC/DNT)',category:'Student',target:'SC/ST',state:'All India',income_limit:600000,age_min:18,age_max:35,benefit_type:'Scholarship',benefit_value:1280000,benefit_display:'USD 15,400/year (≈₹12.8L)',link:'https://nosmsje.gov.in',docs:['Aadhaar Card','Caste Certificate','Income Certificate','Foreign University Admission Letter','Academic Transcripts','Passport'],steps:['Apply at nosmsje.gov.in when portal opens (Jan-Feb)','Submit all documents with foreign admission letter','Department verifies documents','Interview/selection process','Scholarship released in foreign currency'],tags:['Student','SC/ST','Scholarship','Overseas','Education'],notes:'For PhD/PG abroad; income ≤ ₹6L; covers tuition + living; very competitive'},
+  {id:'S030',name:'Karnataka Free Laptop Scheme',category:'Student',target:'Student',state:'Karnataka',income_limit:null,age_min:17,age_max:22,benefit_type:'Grant',benefit_value:30000,benefit_display:'Free laptop worth ≈₹30,000',link:'https://sevasindhu.karnataka.gov.in',docs:['Aadhaar Card','SSLC/PUC Marks Card (min 75%)','College Admission Letter','Income Certificate'],steps:['Apply on Seva Sindhu portal (sevasindhu.karnataka.gov.in)','Submit marks card and college admission proof','College/district verifies application','Laptop distributed at college or district centre','One laptop per eligible student'],tags:['Student','Karnataka','Grant','Technology','Education'],notes:'For first-year diploma/degree students in Karnataka govt colleges; minimum 75% marks'},
+  {id:'S031',name:'MGNREGS – Rural Employment Guarantee',category:'Livelihood',target:'BPL',state:'All India',income_limit:null,age_min:18,age_max:null,benefit_type:'Wage',benefit_value:26400,benefit_display:'₹26,400/year (100 days)',link:'https://nrega.nic.in',docs:['Aadhaar Card','Job Card (from Gram Panchayat)','Bank Account'],steps:['Apply for Job Card at Gram Panchayat office (free)','Panchayat issues Job Card within 15 days','Submit written demand for work','Work allocated within 15 days','Wages credited to bank account weekly'],tags:['BPL','Livelihood','Employment','Rural','Wage'],notes:'100 days guaranteed work/year; KA wage ₹316/day; right to compensation if delayed'},
+  {id:'S032',name:'PM Vishwakarma Yojana – Full Scheme',category:'Artisan',target:'Artisan',state:'All India',income_limit:300000,age_min:18,age_max:60,benefit_type:'Skill+Loan',benefit_value:100000,benefit_display:'Free training + ₹1L @ 5%',link:'https://pmvishwakarma.gov.in',docs:['Aadhaar Card','Trade/Skill Proof','Bank Account'],steps:['Register on pmvishwakarma.gov.in','Verify traditional trade skill','5-day basic + 15-day advanced training','Receive PM Vishwakarma Certificate + ID card','Apply for ₹1L loan at 5%; ₹2L after repayment'],tags:['Artisan','Loan','Skill','Traditional','Business'],notes:'18 trades; free toolkit ₹15,000; market linkage via GeM portal'},
+  {id:'S033',name:'PM Jan Dhan Yojana (PMJDY)',category:'BPL',target:'BPL',state:'All India',income_limit:null,age_min:10,age_max:null,benefit_type:'Banking Access',benefit_value:10000,benefit_display:'₹10,000 overdraft + free RuPay card',link:'https://www.pmjdy.gov.in',docs:['Aadhaar Card or any government-issued ID'],steps:['Visit any bank branch or post office','Fill account opening form with Aadhaar','Zero balance account opened same day','Free RuPay debit card issued','₹10,000 overdraft available after 6 months'],tags:['BPL','Banking','Livelihood','Financial Inclusion'],notes:'Zero minimum balance; ₹2L accident insurance via RuPay; gateway to all DBT schemes'},
+  {id:'S034',name:'PM Shram Yogi Maan-dhan (PM-SYM)',category:'Livelihood',target:'General',state:'All India',income_limit:null,age_min:18,age_max:40,benefit_type:'Pension',benefit_value:36000,benefit_display:'₹3,000/month after age 60',link:'https://maandhan.in',docs:['Aadhaar Card','Mobile Number','Bank Account (savings)','Self-declaration of unorganised worker status'],steps:['Register at CSC or maandhan.in','Declare unorganised worker status','Choose contribution ₹55–₹200/month','Govt matches your contribution equally','Receive ₹3,000/month pension from age 60'],tags:['Livelihood','Pension','Unorganised','Social Security'],notes:'For unorganised workers; income ≤ ₹15K/month; rickshaw pullers, construction workers etc.'},
+  {id:'S035',name:'PM Surya Ghar: Muft Bijli Yojana',category:'BPL',target:'General',state:'All India',income_limit:null,age_min:18,age_max:null,benefit_type:'Subsidy',benefit_value:78000,benefit_display:'₹78,000 subsidy + 300 free units/month',link:'https://pmsuryaghar.gov.in',docs:['Aadhaar Card','Electricity Bill (consumer ID)','Bank Account','House Ownership Proof or NOC'],steps:['Apply on pmsuryaghar.gov.in using consumer ID','Choose empanelled solar vendor from approved list','Vendor installs rooftop solar panel','DISCOM inspects and approves net metering','Subsidy directly credited to bank account','Earn from selling excess power to grid'],tags:['Housing','Subsidy','Solar','Energy','Environment'],notes:'₹30K for 1kW; ₹60K for 2kW; ₹78K for 3kW; 300 free units/month; earn from grid export'},
+  {id:'S036',name:'Ayushman Bharat – Senior Citizens 70+',category:'Senior Citizen',target:'Senior Citizen',state:'All India',income_limit:null,age_min:70,age_max:null,benefit_type:'Health Insurance',benefit_value:500000,benefit_display:'₹5,00,000 health cover/year',link:'https://pmjay.gov.in',docs:['Aadhaar Card','Age Proof (birth cert, voter ID, or Aadhaar)'],steps:['Visit nearest CSC, Jan Aushadhi Kendra or empanelled hospital','Submit Aadhaar and age proof','Ayushman Vay Vandana card issued free','Use card at any empanelled hospital for cashless treatment','No premium required'],tags:['Senior Citizen','Health','Insurance','Free'],notes:'ALL senior citizens 70+ eligible regardless of income; launched Oct 2024'}
+];
+
+// ══════════════════════════════════════════════════════════
+// MATCHING ENGINE
+// ══════════════════════════════════════════════════════════
+let currentResults = [];
+let currentFilter = 'all';
+
+// Checkbox toggles
+document.querySelectorAll('.checkbox-item').forEach(item => {
+  item.addEventListener('click', function() {
+    const cb = this.querySelector('input');
+    cb.checked = !cb.checked;
+    this.classList.toggle('checked', cb.checked);
+  });
+});
+
+function getProfile() {
+  return {
+    age: parseInt(document.getElementById('age').value) || 0,
+    gender: document.getElementById('gender').value,
+    state: document.getElementById('state').value,
+    income: parseInt(document.getElementById('income').value) || 0,
+    occupation: document.getElementById('occupation').value,
+    caste: document.getElementById('caste').value,
+    bpl: document.getElementById('bpl_card').checked,
+    disability: document.getElementById('disability').checked,
+    senior: document.getElementById('senior_citizen').checked || (parseInt(document.getElementById('age').value) >= 60),
+    exsvc: document.getElementById('ex_serviceman').checked
+  };
+}
+
+function matchScore(scheme, p) {
+  let score = 0;
+  // State (25 pts)
+  if (scheme.state === 'All India' || scheme.state === p.state) score += 25;
+  // Income (25 pts)
+  if (!scheme.income_limit || p.income <= scheme.income_limit) score += 25;
+  // Age (25 pts)
+  const ageOk = (p.age >= (scheme.age_min || 0)) && (!scheme.age_max || p.age <= scheme.age_max);
+  if (ageOk) score += 25;
+  // Category (25 pts)
+  const t = scheme.target;
+  const catMatch = (
+    t === 'General' ||
+    (t === 'Farmer' && p.occupation === 'Farmer') ||
+    (t === 'Women' && p.gender === 'Female') ||
+    (t === 'BPL' && p.bpl) ||
+    (t === 'SC/ST' && (p.caste === 'SC' || p.caste === 'ST')) ||
+    (t === 'Entrepreneur' && (p.occupation === 'Entrepreneur' || p.occupation === 'Self-employed')) ||
+    (t === 'Artisan' && p.occupation === 'Artisan') ||
+    (t === 'Student' && p.occupation === 'Student') ||
+    (t === 'Senior Citizen' && (p.senior || p.age >= 70))
+  );
+  if (catMatch) score += 25;
+  return score;
+}
+
+function isEligible(scheme, p) {
+  return matchScore(scheme, p) === 100;
+}
+
+function findSchemes() {
+  const p = getProfile();
+  if (!p.state && !p.occupation) {
+    alert('Please fill at least your State and Occupation to find matching schemes.');
+    return;
+  }
+
+  document.getElementById('preSearch').style.display = 'none';
+  document.getElementById('loader').style.display = 'block';
+  document.getElementById('moneyBanner').style.display = 'none';
+  document.getElementById('resultsSection').style.display = 'none';
+
+  setTimeout(() => {
+    document.getElementById('loader').style.display = 'none';
+
+    currentResults = SCHEMES.map(s => ({
+      ...s,
+      score: matchScore(s, p),
+      eligible: isEligible(s, p)
+    })).sort((a,b) => b.score - a.score || b.benefit_value - a.benefit_value);
+
+    const matched = currentResults.filter(s => s.eligible);
+    const totalBenefit = matched.reduce((sum,s) => sum + s.benefit_value, 0);
+
+    // Money banner
+    document.getElementById('moneyBanner').style.display = 'block';
+    document.getElementById('totalAmount').textContent = '₹' + totalBenefit.toLocaleString('en-IN');
+    document.getElementById('matchCount').textContent = matched.length;
+
+    // Breakdown chips
+    const catCounts = {};
+    matched.forEach(s => { catCounts[s.category] = (catCounts[s.category]||0)+1; });
+    document.getElementById('breakdownChips').innerHTML = Object.entries(catCounts)
+      .map(([cat,count]) => `<span class="breakdown-chip">${getCatIcon(cat)} ${cat} (${count})</span>`).join('');
+
+    document.getElementById('resultsSection').style.display = 'block';
+    currentFilter = 'all';
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    document.querySelector('[data-filter="all"]').classList.add('active');
+    renderSchemes(currentResults, p);
+
+    document.getElementById('moneyBanner').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }, 800);
+}
+
+function renderSchemes(schemes, p) {
+  p = p || getProfile();
+  const grid = document.getElementById('schemesGrid');
+  if (schemes.length === 0) {
+    grid.innerHTML = `<div class="no-results" style="grid-column:1/-1">
+      <div class="no-results-icon">🔍</div>
+      <h3>No schemes found</h3>
+      <p>Try selecting a different filter or update your profile.</p>
+    </div>`;
+    document.getElementById('resultsCount').textContent = '';
+    return;
+  }
+
+  document.getElementById('resultsCount').textContent = `Showing ${schemes.length} schemes`;
+  grid.innerHTML = schemes.map(s => schemeCard(s, p)).join('');
+}
+
+function getCatClass(cat) {
+  const map = {'Farmer':'farmer','Women':'women','BPL':'bpl','Business':'business','Artisan':'artisan','SC/ST':'scst','Student':'student','Livelihood':'livelihood','Senior Citizen':'senior'};
+  return map[cat] || 'bpl';
+}
+function getCatIcon(cat) {
+  const map = {'Farmer':'🌾','Women':'👩','BPL':'🏠','Business':'💼','Artisan':'🔨','SC/ST':'📋','Student':'🎓','Livelihood':'👷','Senior Citizen':'👴'};
+  return map[cat] || '📋';
+}
+
+function schemeCard(s, p) {
+  const cc = getCatClass(s.category);
+  const icon = getCatIcon(s.category);
+  const scoreColor = s.score===100?'score-100':s.score>=75?'score-75':s.score>=50?'score-50':'score-25';
+  const stateLabel = s.state==='All India'?'🇮🇳 All India':`🏛️ ${s.state}`;
+  const tags = (s.tags||[]).slice(0,3).map(t=>`<span class="tag">${t}</span>`).join('');
+
+  return `<div class="scheme-card ${s.eligible?'matched':''}" id="card-${s.id}">
+    <div class="card-top">
+      <div class="card-icon cat-${cc}-icon">${icon}</div>
+      <div class="card-info">
+        <div class="card-category cat-${cc}">${s.category}</div>
+        <div class="card-name">${s.name}</div>
+        <div class="card-state">${stateLabel}</div>
+      </div>
+    </div>
+    <div class="card-benefit benefit-${cc}">
+      <div>
+        <div class="benefit-amount">${s.benefit_display}</div>
+        <div class="benefit-type">${s.benefit_type}</div>
+      </div>
+    </div>
+    <div class="card-score">
+      <div class="score-bar-wrap"><div class="score-bar ${scoreColor}" style="width:${s.score}%"></div></div>
+      <div class="score-label">${s.score}%</div>
+    </div>
+    <div class="card-tags">${tags}</div>
+    <div class="card-actions">
+      <button class="btn-apply" onclick="openModal('${s.id}')">View Details & Apply</button>
+      <button class="btn-docs" onclick="openModal('${s.id}')">📄 Docs</button>
+    </div>
+  </div>`;
+}
+
+function filterSchemes(el, filter) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = filter;
+  const p = getProfile();
+  let filtered;
+  if (filter === 'all') filtered = currentResults;
+  else if (filter === 'matched') filtered = currentResults.filter(s => s.eligible);
+  else filtered = currentResults.filter(s => s.category === filter);
+  renderSchemes(filtered, p);
+}
+
+// ── MODAL ────────────────────────────────────────────────
+function openModal(id) {
+  const s = SCHEMES.find(x => x.id === id);
+  if (!s) return;
+  const cc = getCatClass(s.category);
+  const icon = getCatIcon(s.category);
+
+  document.getElementById('modalCat').innerHTML = `<span class="cat-${cc}" style="font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase">${icon} ${s.category}</span>`;
+  document.getElementById('modalTitle').textContent = s.name;
+
+  const docs = (s.docs||[]).map(d => `<div class="doc-item">${d}</div>`).join('');
+  const steps = (s.steps||[]).map((st,i) => `<div class="step-item"><div class="step-num">${i+1}</div><div class="step-text">${st}</div></div>`).join('');
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-amount">
+      <div>
+        <div class="modal-amount-num">${s.benefit_display}</div>
+        <div class="modal-amount-type">${s.benefit_type}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:12px;color:var(--gray-600)">State</div>
+        <div style="font-size:15px;font-weight:700;color:var(--navy)">${s.state}</div>
+      </div>
+    </div>
+    ${s.notes ? `<div class="modal-section"><h4>💡 Key Points</h4><p style="font-size:13px;color:var(--gray-600);line-height:1.6;background:var(--green-pale);padding:12px 14px;border-radius:10px;border-left:3px solid var(--green-light)">${s.notes}</p></div>` : ''}
+    <div class="modal-section">
+      <h4>📄 Required Documents</h4>
+      <div class="docs-list">${docs}</div>
+    </div>
+    <div class="modal-section">
+      <h4>📝 How to Apply (Step-by-Step)</h4>
+      <div class="steps-list">${steps}</div>
+    </div>
+    <div class="modal-section">
+      <a class="modal-link" href="${s.link}" target="_blank" rel="noopener">
+        🌐 Apply on Official Portal
+      </a>
+    </div>
+    <div class="modal-meta">
+      ${s.income_limit ? `<span class="meta-chip">Income limit: ₹${s.income_limit.toLocaleString('en-IN')}</span>` : '<span class="meta-chip">No income limit</span>'}
+      <span class="meta-chip">Age: ${s.age_min||0}${s.age_max?'–'+s.age_max:'+'} years</span>
+      ${s.processing_days ? `<span class="meta-chip">⏱ ${s.processing_days} days</span>` : ''}
+    </div>`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalOverlay')) return;
+  document.getElementById('modalOverlay').classLi
